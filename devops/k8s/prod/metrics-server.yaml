@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:metrics-server
+rules:
+  - apiGroups: [ "" ]
+    resources: [ "pods", "nodes", "nodes/stats" ]
+    verbs: [ "get", "list", "watch" ]
+  - apiGroups: [ "" ]
+    resources: [ "nodes/metrics" ]
+    verbs: [ "get" ]
+  - apiGroups: [ "metrics.k8s.io" ]
+    resources: [ "pods", "nodes" ]
+    verbs: [ "get", "list", "watch" ]
+  - apiGroups: [ "" ]
+    resources: [ "configmaps" ]
+    resourceNames: [ "extension-apiserver-authentication" ]
+    verbs: [ "get", "list", "watch" ]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:metrics-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:metrics-server
+subjects:
+  - kind: ServiceAccount
+    name: metrics-server
+    namespace: kube-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server
+    spec:
+      serviceAccountName: metrics-server
+      containers:
+        - name: metrics-server
+          image: public.ecr.aws/eks-distro/kubernetes-sigs/metrics-server:v0.7.2-eks-1-29-latest
+          args:
+            - --secure-port=4443
+            - --cert-dir=/tmp
+            - --kubelet-insecure-tls
+            - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+          ports:
+            - containerPort: 4443
+              name: main-port
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 200m
+              memory: 400Mi
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
+      volumes:
+        - name: tmp-dir
+          emptyDir: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    k8s-app: metrics-server
+  ports:
+    - port: 443
+      targetPort: 4443
+      protocol: TCP

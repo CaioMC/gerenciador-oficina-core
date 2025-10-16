@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gerenciador-oficina-config
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://{{RDS_ENDPOINT}}:5432/postgres
+

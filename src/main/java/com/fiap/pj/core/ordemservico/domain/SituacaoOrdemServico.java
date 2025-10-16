@@ -2,43 +2,23 @@ package com.fiap.pj.core.ordemservico.domain;
 
 
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
-import com.fiap.pj.core.usuario.domain.Usuario;
 import com.fiap.pj.core.util.DateTimeUtils;
-import com.fiap.pj.core.util.security.SecurityContextUtils;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.fiap.pj.infra.util.security.SecurityContextUtils;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "situacoes_ordens_servico")
-@NoArgsConstructor
 @Getter
+@AllArgsConstructor
 public class SituacaoOrdemServico {
 
-    @Id
     private UUID id;
-
-    @Enumerated(EnumType.STRING)
     private OrdemServicoStatus status;
-
     private UUID usuarioId;
-
     private UUID ordemServicoId;
-
     private ZonedDateTime dataCriacao;
-
-    @OneToOne
-    @JoinColumn(name = "usuarioId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Usuario usuario;
 
     public SituacaoOrdemServico(OrdemServicoStatus status, UUID ordemServicoId) {
         this.id = UUID.randomUUID();
@@ -47,4 +27,5 @@ public class SituacaoOrdemServico {
         this.ordemServicoId = ordemServicoId;
         this.dataCriacao = DateTimeUtils.getNow();
     }
+
 }

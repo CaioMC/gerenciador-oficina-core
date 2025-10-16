@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gerenciador-oficina-core-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gerenciador-oficina-core-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gerenciador-oficina-core-api
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: gerenciador-oficina-core-api
+          image: "docker.io/jayjayg/gerenciador-oficina-core:latest"
+          resources:
+            requests:
+              memory: "1200Mi"
+              cpu: "250m"
+            limits:
+              memory: "1536Mi"
+              cpu: "500m"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: gerenciador-oficina-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-credentials
+                  key: username
+            - name: SPRING_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: smtp-credentials
+                  key: password

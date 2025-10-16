@@ -1,7 +1,7 @@
 package com.fiap.pj.core.veiculo.util.factory;
 
+import com.fiap.pj.core.veiculo.app.usecase.command.AdicionarVeiculoClienteCommand;
 import com.fiap.pj.core.veiculo.domain.Veiculo;
-import com.fiap.pj.core.veiculo.usecase.command.AdicionarVeiculoClienteCommand;
 
 import java.util.UUID;
 

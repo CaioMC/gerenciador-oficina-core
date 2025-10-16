@@ -10,7 +10,6 @@ public class OrcamentoExceptions {
         }
     }
 
-
     public static class ReprovarOrcamentoStatusInvalidoException extends RuntimeException {
         public ReprovarOrcamentoStatusInvalidoException() {
             super("Status do orcamento não permite reprovar.");

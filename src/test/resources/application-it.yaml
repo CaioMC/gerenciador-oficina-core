@@ -1,8 +1,9 @@
 spring:
   datasource:
-    URL: jdbc:postgresql://localhost:5432/gerenciador-oficina
-    username: postgres
-    password: oficina@123
+    URL: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
   jpa:
     show-sql: true
@@ -10,6 +11,11 @@ spring:
       hibernate:
         default_schema: '"_IT"'
         '[generate_statistics]': true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   flyway:
     default-schema: _IT

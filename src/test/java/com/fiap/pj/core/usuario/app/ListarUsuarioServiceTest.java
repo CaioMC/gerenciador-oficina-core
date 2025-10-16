@@ -1,46 +1,59 @@
 package com.fiap.pj.core.usuario.app;
 
-import com.fiap.pj.core.usuario.adapter.in.api.request.ListarUsuarioRequest;
-import com.fiap.pj.core.usuario.adapter.in.api.response.UsuarioReponse;
-import com.fiap.pj.core.usuario.adapter.out.db.UsuarioRepositoryJpa;
-import com.fiap.pj.infra.api.Slice;
+import com.fiap.pj.core.usuario.app.gateways.UsuarioGateway;
+import com.fiap.pj.core.usuario.util.factrory.UsuarioTestFactory;
+import com.fiap.pj.infra.sk.api.Slice;
+import com.fiap.pj.infra.usuario.controller.request.ListarUsuarioRequest;
+import com.fiap.pj.infra.usuario.controller.response.UsuarioReponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ListarUsuarioServiceTest {
 
     @Mock
-    private UsuarioRepositoryJpa usuarioRepositoryJpa;
-    
+    private UsuarioGateway usuarioGateway;
+
     @InjectMocks
-    private ListarUsuariorService listarUsuariorService;
+    private ListarUsuariorUseCaseImpl listarUsuariorUseCaseImpl;
 
     @Test
     void deveListarUsuarios() {
-        var request = new ListarUsuarioRequest("Teddy", PageRequest.of(0, 10), true);
+        var request = new ListarUsuarioRequest(UsuarioTestFactory.NAME, PageRequest.of(0, 10), true);
+        UsuarioReponse usuarioResponseMock = Mockito.mock(UsuarioReponse.class);
+        when(usuarioResponseMock.getId()).thenReturn(UsuarioTestFactory.ID.toString());
+        when(usuarioResponseMock.getNome()).thenReturn(UsuarioTestFactory.NAME);
+        when(usuarioResponseMock.getSobreNome()).thenReturn(UsuarioTestFactory.LAST_NAME);
+        when(usuarioResponseMock.getEmail()).thenReturn(UsuarioTestFactory.E_MAIL);
 
-        var slice = new Slice<UsuarioReponse>(false, List.of());
+        var slice = new Slice<>(false, List.of(usuarioResponseMock));
 
-        when(usuarioRepositoryJpa.findProjectedBy(any(Specification.class), any(PageRequest.class), any(Class.class)))
+        when(usuarioGateway.listarUsuarios(request))
                 .thenReturn(slice);
 
-        var result = listarUsuariorService.handle(request);
+        var result = listarUsuariorUseCaseImpl.handle(request);
 
         assertNotNull(result);
-        assertEquals(0, result.getItems().size());
+
+        var item = result.getItems().stream().findFirst().orElse(null);
+        assertNotNull(item);
+        assertEquals(1, result.getItems().size());
+        assertEquals(UsuarioTestFactory.ID.toString(), item.getId());
+        assertEquals(UsuarioTestFactory.NAME, item.getNome());
+        assertEquals(UsuarioTestFactory.LAST_NAME, item.getSobreNome());
+        assertEquals(UsuarioTestFactory.E_MAIL, item.getEmail());
+
     }
 
 } 

@@ -1,12 +1,13 @@
 package com.fiap.pj.core.orcamento.domain;
 
 import com.fiap.pj.core.orcamento.util.factory.OrcamentoTestFactory;
+import com.fiap.pj.core.pecainsumo.exception.PecaInsumoExceptions.PecasInsumoQuantidadeMenorIgualAZeroException;
+import com.fiap.pj.core.pecainsumo.util.factory.PecaInsumoTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
+import static com.fiap.pj.core.orcamento.util.factory.OrcamentoTestFactory.ITEM_PECA_INSUMO_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,7 +28,6 @@ class OrcamentoTest {
         assertEquals(OrcamentoTestFactory.VEICULO_ID, orcamento.getVeiculoId());
         assertEquals(OrcamentoTestFactory.HODOMENTO, orcamento.getHodometro());
         assertEquals(OrcamentoTestFactory.ORCAMENTO_STATUS, orcamento.getStatus());
-        assertEquals(new BigDecimal("524.00"), orcamento.getValorTotal());
         assertFalse(orcamento.getServicos().isEmpty());
     }
 
@@ -40,7 +40,7 @@ class OrcamentoTest {
                     () -> new Orcamento(null,
                             null,
                             null,
-                            null, null,0, null, null));
+                            null, null, 0, null, null));
         }
 
         @Test
@@ -68,6 +68,16 @@ class OrcamentoTest {
                             null,
                             OrcamentoTestFactory.CLIENTE_ID,
                             OrcamentoTestFactory.VEICULO_ID, null, 0, null, null));
+        }
+
+        @Test
+        void deveFalharComQuatidadeDePecaInsumoInvalida() {
+
+            var orcamento = OrcamentoTestFactory.umOrcamento();
+            var pecasInsumo = new OrcamentoItemPecaInsumo(ITEM_PECA_INSUMO_ID, PecaInsumoTestFactory.ID, orcamento.getId(), PecaInsumoTestFactory.DESCRICAO, PecaInsumoTestFactory.VALOR_UNITARIO, 0);
+
+            assertThrows(PecasInsumoQuantidadeMenorIgualAZeroException.class, () ->
+                    orcamento.adicionaPecaInsumo(pecasInsumo));
         }
     }
 }

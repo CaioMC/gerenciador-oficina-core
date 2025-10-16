@@ -1,16 +1,16 @@
 package com.fiap.pj.core.orcamento.util.factory;
 
 import com.fiap.pj.core.cliente.util.factory.ClienteTestFactory;
+import com.fiap.pj.core.orcamento.app.usecase.command.AlterarOrcamentoCommand;
+import com.fiap.pj.core.orcamento.app.usecase.command.AprovarOrcamentoCommand;
+import com.fiap.pj.core.orcamento.app.usecase.command.CriarOrcamentoCommand;
+import com.fiap.pj.core.orcamento.app.usecase.command.OrcamentoItemPecaInsumoCommand;
+import com.fiap.pj.core.orcamento.app.usecase.command.OrcamentoItemServicoCommand;
+import com.fiap.pj.core.orcamento.app.usecase.command.ReprovarOrcamentoCommand;
 import com.fiap.pj.core.orcamento.domain.Orcamento;
 import com.fiap.pj.core.orcamento.domain.OrcamentoItemPecaInsumo;
 import com.fiap.pj.core.orcamento.domain.OrcamentoItemServico;
 import com.fiap.pj.core.orcamento.domain.enums.OrcamentoStatus;
-import com.fiap.pj.core.orcamento.usecase.command.AlterarOrcamentoCommand;
-import com.fiap.pj.core.orcamento.usecase.command.AprovarOrcamentoCommand;
-import com.fiap.pj.core.orcamento.usecase.command.CriarOrcamentoCommand;
-import com.fiap.pj.core.orcamento.usecase.command.OrcamentoItemPecaInsumoCommand;
-import com.fiap.pj.core.orcamento.usecase.command.OrcamentoItemServicoCommand;
-import com.fiap.pj.core.orcamento.usecase.command.ReprovarOrcamentoCommand;
 import com.fiap.pj.core.pecainsumo.util.factory.PecaInsumoTestFactory;
 import com.fiap.pj.core.servico.util.factory.ServicoTestFactory;
 import com.fiap.pj.core.usuario.util.factrory.UsuarioTestFactory;
@@ -58,7 +58,7 @@ public class OrcamentoTestFactory {
     }
 
     public static OrcamentoItemServico umOrcamentoItemServico(UUID orcamentoId) {
-        return new OrcamentoItemServico(ITEM_SERVICO_ID, ServicoTestFactory.ID, orcamentoId, ServicoTestFactory.DESCRICAO, ServicoTestFactory.PRECO, ITEM_SERVICO_QUANTIDADE);
+        return new OrcamentoItemServico(ITEM_SERVICO_ID, ServicoTestFactory.ID, orcamentoId, ServicoTestFactory.DESCRICAO, ServicoTestFactory.VALOR_UNITARIO, ITEM_SERVICO_QUANTIDADE);
     }
 
     public static OrcamentoItemPecaInsumo umOrcamentoItemPecaInsumo(UUID orcamentoId) {

@@ -1,10 +1,10 @@
 package com.fiap.pj.core.ordemservico.util.factory;
 
 import com.fiap.pj.core.cliente.util.factory.ClienteTestFactory;
+import com.fiap.pj.core.ordemservico.app.usecase.command.CriarOrdemServicoCommand;
+import com.fiap.pj.core.ordemservico.app.usecase.command.RealizarDiagnosticoOrdemServicoCommand;
 import com.fiap.pj.core.ordemservico.domain.OrdemServico;
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
-import com.fiap.pj.core.ordemservico.usecase.command.CriarOrdemServicoCommand;
-import com.fiap.pj.core.ordemservico.usecase.command.RealizarDiagnosticoOrdemServicoCommand;
 import com.fiap.pj.core.usuario.util.factrory.UsuarioTestFactory;
 import com.fiap.pj.core.veiculo.util.factory.VeiculoTestFactory;
 

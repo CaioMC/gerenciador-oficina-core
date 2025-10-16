@@ -5,6 +5,7 @@ CREATE TABLE clientes
     ativo      BOOLEAN        NOT NULL,
     email      VARCHAR(255),
     telefone   VARCHAR(32),
+    endereco   VARCHAR(255),
     documento_identificacao_origem SMALLINT NOT NULL,
     documento_identificacao_numero VARCHAR(64) NOT NULL UNIQUE,
     CONSTRAINT cliente_pkey  PRIMARY KEY (id)

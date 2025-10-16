@@ -11,7 +11,7 @@ public class TestSecurityConfig {
 
 
     public static void setAuthentication() {
-        UserDetailsImpl principal = new UserDetailsImpl(UsuarioTestFactory.umUsuario(), List.of());
+        UserDetailsImpl principal = new UserDetailsImpl(UsuarioTestFactory.umUsuarioEntity(), List.of());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

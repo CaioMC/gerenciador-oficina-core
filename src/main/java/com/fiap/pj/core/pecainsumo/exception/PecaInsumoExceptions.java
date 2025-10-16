@@ -16,8 +16,14 @@ public class PecaInsumoExceptions {
         }
     }
 
-    public static class QuantidadeEstoqueInsuficienteException extends RuntimeException {
-        public QuantidadeEstoqueInsuficienteException() {
+    public static class PecasInsumoQuantidadeMenorIgualAZeroException extends RuntimeException {
+        public PecasInsumoQuantidadeMenorIgualAZeroException() {
+            super("Quantidade de Peça/Insumo deve ser maior que zero");
+        }
+    }
+
+    public static class PecasInsumoQuantidadeEstoqueInsuficienteException extends RuntimeException {
+        public PecasInsumoQuantidadeEstoqueInsuficienteException() {
             super("Quantidade em estoque insuficiente.");
         }
     }

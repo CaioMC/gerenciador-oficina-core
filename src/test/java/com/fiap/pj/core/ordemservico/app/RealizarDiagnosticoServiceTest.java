@@ -1,7 +1,7 @@
 package com.fiap.pj.core.ordemservico.app;
 
 
-import com.fiap.pj.core.ordemservico.adapter.out.db.OrdemServicoRepositoryJpa;
+import com.fiap.pj.core.ordemservico.app.gateways.OrdemServicoGateway;
 import com.fiap.pj.core.ordemservico.domain.OrdemServico;
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoStatusInvalidoDiagnosticoException;
@@ -15,6 +15,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.AGUARDANDO_APROVACAO;
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.EM_DIAGNOSTICO;
@@ -30,21 +32,21 @@ class RealizarDiagnosticoServiceTest {
     ArgumentCaptor<OrdemServico> ordemServicoArgumentCaptor;
 
     @Mock
-    private OrdemServicoRepositoryJpa ordemServicoRepositoryJpa;
+    private OrdemServicoGateway ordemServicoGateway;
 
     @InjectMocks
-    private RealizarDiagnosticoService realizarDiagnosticoService;
+    private RealizarDiagnosticoUseCaseImpl realizarDiagnosticoUseCaseImpl;
 
     @Test
     void deveAlteraStatusOsEmDiagnostico() {
         TestSecurityConfig.setAuthentication();
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(EM_DIAGNOSTICO);
 
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
 
-        realizarDiagnosticoService.handle(OrdemServicoTestFactory.umRealizarDiagnosticoOrdemServicoCommand());
+        realizarDiagnosticoUseCaseImpl.handle(OrdemServicoTestFactory.umRealizarDiagnosticoOrdemServicoCommand());
 
-        verify(ordemServicoRepositoryJpa).save(ordemServicoArgumentCaptor.capture());
+        verify(ordemServicoGateway).salvar(ordemServicoArgumentCaptor.capture());
         OrdemServico ordemServicoAlterada = ordemServicoArgumentCaptor.getValue();
 
         Assertions.assertNotNull(ordemServico);
@@ -56,9 +58,9 @@ class RealizarDiagnosticoServiceTest {
     @Test
     void deveRetornarOrdemServicoStatusInvalidoDiagnosticoException() {
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(AGUARDANDO_APROVACAO);
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
 
-        var thrown = catchThrowable(() -> realizarDiagnosticoService.handle(OrdemServicoTestFactory.umRealizarDiagnosticoOrdemServicoCommand()));
+        var thrown = catchThrowable(() -> realizarDiagnosticoUseCaseImpl.handle(OrdemServicoTestFactory.umRealizarDiagnosticoOrdemServicoCommand()));
         assertThat(thrown).isInstanceOf(OrdemServicoStatusInvalidoDiagnosticoException.class);
     }
 

@@ -1,14 +1,14 @@
 package com.fiap.pj.core.veiculo.adapter.in.api;
 
 
-import com.fiap.pj.core.cliente.adapter.in.api.ClienteVeiculoController;
 import com.fiap.pj.core.cliente.util.factory.ClienteTestFactory;
 import com.fiap.pj.core.util.TestUtils;
-import com.fiap.pj.core.veiculo.usecase.AdicionarVeiculoClienteUseCase;
-import com.fiap.pj.core.veiculo.usecase.RemoverVeiculoClienteUseCase;
-import com.fiap.pj.core.veiculo.usecase.command.AdicionarVeiculoClienteCommand;
-import com.fiap.pj.core.veiculo.usecase.command.RemoverVeiculoClienteCommand;
+import com.fiap.pj.core.veiculo.app.usecase.AdicionarVeiculoClienteUseCase;
+import com.fiap.pj.core.veiculo.app.usecase.RemoverVeiculoClienteUseCase;
+import com.fiap.pj.core.veiculo.app.usecase.command.AdicionarVeiculoClienteCommand;
+import com.fiap.pj.core.veiculo.app.usecase.command.RemoverVeiculoClienteCommand;
 import com.fiap.pj.core.veiculo.util.factory.VeiculoTestFactory;
+import com.fiap.pj.infra.cliente.controller.ClienteVeiculoController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,9 +59,9 @@ class VeiculoControllerTest {
     void deveRemoverVeiculoDoCliente() throws Exception {
         var veiculoId = UUID.randomUUID();
         var command = new RemoverVeiculoClienteCommand(ClienteTestFactory.ID, veiculoId);
-        
+
         Mockito.doNothing().when(removerVeiculoClienteUseCase).handle(Mockito.any(RemoverVeiculoClienteCommand.class));
-        
+
         mock.perform(delete(
                 TestUtils.buildURL(ClienteVeiculoController.PATH.replace("{id}", ClienteTestFactory.ID.toString())))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

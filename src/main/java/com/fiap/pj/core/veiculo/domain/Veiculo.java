@@ -1,23 +1,16 @@
 package com.fiap.pj.core.veiculo.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-@Entity
-@Table(name = "veiculos")
-@NoArgsConstructor
+
 @Getter
 public class Veiculo {
 
-    @Id
     private UUID id;
     private String placa;
     private String modelo;

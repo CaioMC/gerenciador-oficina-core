@@ -1,8 +1,8 @@
 package com.fiap.pj.core.pecainsumo.util.factory;
 
+import com.fiap.pj.core.pecainsumo.app.usecase.command.AlterarPecaInsumoCommand;
+import com.fiap.pj.core.pecainsumo.app.usecase.command.CriarPecaInsumoCommand;
 import com.fiap.pj.core.pecainsumo.domain.PecaInsumo;
-import com.fiap.pj.core.pecainsumo.usecase.command.AlterarPecaInsumoCommand;
-import com.fiap.pj.core.pecainsumo.usecase.command.CriarPecaInsumoCommand;
 
 import java.math.BigDecimal;
 import java.util.UUID;

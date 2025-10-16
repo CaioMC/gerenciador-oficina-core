@@ -1,39 +1,25 @@
 package com.fiap.pj.core.pecainsumo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fiap.pj.core.pecainsumo.exception.PecaInsumoExceptions.PecasInsumoQuantidadeEstoqueInsuficienteException;
+import com.fiap.pj.core.pecainsumo.exception.PecaInsumoExceptions.PecasInsumoQuantidadeMenorIgualAZeroException;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-@Entity
-@Table(name = "pecas_insumos")
-@NoArgsConstructor
+
 @Getter
 public class PecaInsumo {
 
-    @Id
     private UUID id;
-
-    @Column(nullable = false)
     private String descricao;
-
-    @Column(nullable = false)
     private BigDecimal valorUnitario;
-
-    @Column(nullable = false)
     private Integer quantidadeEstoque;
-
-    @Column(nullable = false)
     private Integer quantidadeMinimoEstoque;
-
     private String modeloVeiculo;
+
 
     public PecaInsumo(UUID id, String descricao, String modeloVeiculo, BigDecimal valorUnitario, Integer quantidadeEstoque, Integer quantidadeMinimoEstoque) {
         this.id = requireNonNull(id);
@@ -46,17 +32,17 @@ public class PecaInsumo {
 
     public void adicionarEstoque(Integer quantidade) {
         if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+            throw new PecasInsumoQuantidadeMenorIgualAZeroException();
         }
         this.quantidadeEstoque += quantidade;
     }
 
     public void removerEstoque(Integer quantidade) {
         if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+            throw new PecasInsumoQuantidadeMenorIgualAZeroException();
         }
         if (this.quantidadeEstoque < quantidade) {
-            throw new IllegalArgumentException("Quantidade em estoque insuficiente");
+            throw new PecasInsumoQuantidadeEstoqueInsuficienteException();
         }
         this.quantidadeEstoque -= quantidade;
     }

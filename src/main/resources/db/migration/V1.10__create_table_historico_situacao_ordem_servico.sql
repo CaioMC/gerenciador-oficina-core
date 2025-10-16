@@ -3,7 +3,7 @@ CREATE TABLE situacoes_ordens_servico
     id                UUID         NOT NULL,
     status            VARCHAR(32)  NOT NULL,
     ordem_servico_id  UUID         NOT NULL,
-    data_criacao      TIMESTAMPTZ  NOT NULL,
+    data_criacao      TIMESTAMP WITH TIME ZONE  NOT NULL,
     usuario_id        UUID         NOT NULL,
 
     CONSTRAINT situacoes_ordens_servico_pkey  PRIMARY KEY (id),

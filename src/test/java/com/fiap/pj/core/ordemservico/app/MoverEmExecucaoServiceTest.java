@@ -1,7 +1,10 @@
 package com.fiap.pj.core.ordemservico.app;
 
 
-import com.fiap.pj.core.ordemservico.adapter.out.db.OrdemServicoRepositoryJpa;
+import com.fiap.pj.core.cliente.app.gateways.ClienteGateway;
+import com.fiap.pj.core.cliente.util.factory.ClienteTestFactory;
+import com.fiap.pj.core.email.app.usecase.EnviarEmailUseCase;
+import com.fiap.pj.core.ordemservico.app.gateways.OrdemServicoGateway;
 import com.fiap.pj.core.ordemservico.domain.OrdemServico;
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoNaoEncontradaException;
@@ -18,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.AGUARDANDO_APROVACAO;
@@ -25,6 +29,7 @@ import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.CRIA
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.EM_DIAGNOSTICO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,21 +40,30 @@ class MoverEmExecucaoServiceTest {
     ArgumentCaptor<OrdemServico> ordemServicoArgumentCaptor;
 
     @Mock
-    private OrdemServicoRepositoryJpa ordemServicoRepositoryJpa;
+    private OrdemServicoGateway ordemServicoGateway;
+
+    @Mock
+    private ClienteGateway clienteGateway;
+
+    @Mock
+    private EnviarEmailUseCase enviarEmailUseCase;
 
     @InjectMocks
-    private MoverEmExecucaoService moverEmExecucaoService;
+    private MoverEmExecucaoUseCaseImpl moverEmExecucaoUseCaseImpl;
 
     @Test
     void deveAlteraStatusOsEmExecucao() {
         TestSecurityConfig.setAuthentication();
+
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(AGUARDANDO_APROVACAO);
+        var cliente = ClienteTestFactory.umCliente();
 
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
+        when(clienteGateway.buscarPorId(any(UUID.class))).thenReturn(Optional.of(cliente));
 
-        moverEmExecucaoService.handle(ordemServico.getId());
+        moverEmExecucaoUseCaseImpl.handle(ordemServico.getId());
 
-        verify(ordemServicoRepositoryJpa).save(ordemServicoArgumentCaptor.capture());
+        verify(ordemServicoGateway).salvar(ordemServicoArgumentCaptor.capture());
         OrdemServico ordemServicoAlterada = ordemServicoArgumentCaptor.getValue();
 
         Assertions.assertNotNull(ordemServico);
@@ -60,13 +74,16 @@ class MoverEmExecucaoServiceTest {
     @Test
     void deveAlteraStatusOsEmExecucaoComSatusAtualEmDiagnostico() {
         TestSecurityConfig.setAuthentication();
+
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(EM_DIAGNOSTICO);
+        var cliente = ClienteTestFactory.umCliente();
 
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
+        when(clienteGateway.buscarPorId(any(UUID.class))).thenReturn(Optional.of(cliente));
 
-        moverEmExecucaoService.handle(ordemServico.getId());
+        moverEmExecucaoUseCaseImpl.handle(ordemServico.getId());
 
-        verify(ordemServicoRepositoryJpa).save(ordemServicoArgumentCaptor.capture());
+        verify(ordemServicoGateway).salvar(ordemServicoArgumentCaptor.capture());
         OrdemServico ordemServicoAlterada = ordemServicoArgumentCaptor.getValue();
 
         Assertions.assertNotNull(ordemServico);
@@ -79,19 +96,19 @@ class MoverEmExecucaoServiceTest {
         var id = UUID.randomUUID();
 
         Mockito.doThrow(new OrdemServicoNaoEncontradaException())
-                .when(ordemServicoRepositoryJpa)
-                .findByIdOrThrowNotFound(id);
+                .when(ordemServicoGateway)
+                .buscarPorId(id);
 
-        var thrown = catchThrowable(() -> moverEmExecucaoService.handle(id));
+        var thrown = catchThrowable(() -> moverEmExecucaoUseCaseImpl.handle(id));
         assertThat(thrown).isInstanceOf(OrdemServicoNaoEncontradaException.class);
     }
 
     @Test
     void deveRetornarOrdemServicoStatusInvalidoEmExecucaoException() {
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(CRIADA);
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
 
-        var thrown = catchThrowable(() -> moverEmExecucaoService.handle(ordemServico.getId()));
+        var thrown = catchThrowable(() -> moverEmExecucaoUseCaseImpl.handle(ordemServico.getId()));
         assertThat(thrown).isInstanceOf(OrdemServicoStatusInvalidoEmExecucaoException.class);
     }
 

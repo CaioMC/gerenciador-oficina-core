@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento Criado - Oficina Premium</title>
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Conteúdo principal */
+        .content {
+            padding: 30px 20px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .info-detail {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-info {
+            margin-bottom: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <div class="logo">🔧 Oficina Premium</div>
+        <div class="tagline">Novo orçamento criado</div>
+    </div>
+
+    <div class="content">
+        <h1 class="greeting">Orçamento Criado</h1>
+
+        <div class="message">
+            <p>Um novo orçamento foi criado no sistema.</p>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">📋 Detalhes do Orçamento</div>
+            <div class="info-detail">
+                <strong>Identificador Orcamento:</strong> %s<br>
+                <strong>Veiculo:</strong> %s<br>
+                <strong>Criado por:</strong> %s
+            </div>
+        </div>
+
+        <div class="message">
+            <p>Acesse o sistema para revisar e processar este orçamento.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-info">
+            <strong>Oficina Premium</strong><br>
+            📞 (11) 99999-9999 | ✉️ contato@oficinapremium.com.br
+        </div>
+    </div>
+</div>
+</body>
+</html>

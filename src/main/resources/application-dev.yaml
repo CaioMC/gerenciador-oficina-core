@@ -1,5 +1,5 @@
 spring:
   datasource:
-    URL: jdbc:postgresql://localhost:5432/gerenciador-oficina
+    url: jdbc:postgresql://localhost:5432/gerenciador-oficina
     username: postgres
     password: oficina@123

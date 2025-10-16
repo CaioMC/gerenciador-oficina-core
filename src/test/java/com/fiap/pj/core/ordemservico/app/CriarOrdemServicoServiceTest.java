@@ -1,7 +1,7 @@
 package com.fiap.pj.core.ordemservico.app;
 
 
-import com.fiap.pj.core.ordemservico.adapter.out.db.OrdemServicoRepositoryJpa;
+import com.fiap.pj.core.ordemservico.app.gateways.OrdemServicoGateway;
 import com.fiap.pj.core.ordemservico.domain.OrdemServico;
 import com.fiap.pj.core.ordemservico.util.factory.OrdemServicoTestFactory;
 import com.fiap.pj.util.TestSecurityConfig;
@@ -23,10 +23,10 @@ class CriarOrdemServicoServiceTest {
     ArgumentCaptor<OrdemServico> ordemServicoArgumentCaptor;
 
     @Mock
-    private OrdemServicoRepositoryJpa ordemServicoRepositoryJpa;
+    private OrdemServicoGateway ordemServicoGateway;
 
     @InjectMocks
-    private CriarOrdemServicoService criarOrdemServicoService;
+    private CriarOrdemServicoUseCaseImpl criarOrdemServicoUseCaseImpl;
 
     @Test
     void deveCriarOrdemServico() {
@@ -34,9 +34,9 @@ class CriarOrdemServicoServiceTest {
 
         var cmd = OrdemServicoTestFactory.umCriarOrdemServicoCommand();
 
-        criarOrdemServicoService.handle(cmd);
+        criarOrdemServicoUseCaseImpl.handle(cmd);
 
-        verify(ordemServicoRepositoryJpa).save(ordemServicoArgumentCaptor.capture());
+        verify(ordemServicoGateway).salvar(ordemServicoArgumentCaptor.capture());
         OrdemServico ordemServico = ordemServicoArgumentCaptor.getValue();
 
         Assertions.assertNotNull(ordemServico);

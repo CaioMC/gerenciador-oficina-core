@@ -2,8 +2,8 @@ package com.fiap.pj.core.cliente.util.factory;
 
 
 import com.fiap.pj.core.cliente.domain.Cliente;
-import com.fiap.pj.core.cliente.usecase.command.AlterarClienteCommand;
-import com.fiap.pj.core.cliente.usecase.command.CriarClienteCommand;
+import com.fiap.pj.core.cliente.app.usecase.command.AlterarClienteCommand;
+import com.fiap.pj.core.cliente.app.usecase.command.CriarClienteCommand;
 import com.fiap.pj.core.sk.documentoidentificacao.domain.DocumentoIdentificacao;
 import com.fiap.pj.core.sk.documentoidentificacao.domain.enums.OrigemDocumento;
 

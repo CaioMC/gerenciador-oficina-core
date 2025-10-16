@@ -1,5 +1,4 @@
 spring:
-
   application:
     name: gerenciador-oficina-core
 
@@ -16,7 +15,7 @@ spring:
       transaction-isolation: TRANSACTION_READ_COMMITTED
       auto-commit: false
       validation-timeout: 3000
-      leak-detection-threshold: 0  # 1min - log message indicating a possible connection leak
+      leak-detection-threshold: 0
       data-source-properties:
         useServerPrepStmts: false
         cachePrepStmts: true
@@ -47,6 +46,28 @@ spring:
         max-page-size: 50
         default-page-size: 10
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: oficina.mecanica.tech.fiap@gmail.com
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl.trust: smtp.gmail.com
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration
+
 springdoc:
   default-produces-media-type: application/json
   api-docs:
@@ -63,11 +84,26 @@ springdoc:
   group-configs:
     - group: v1 - api
       paths-to-match: /v1/**
+    - group: externa
+      paths-to-match: /externo/**
 
 api:
   security:
     jwt:
       secret: n7Q2zXE9+fR3GjG2Q1v9K2Wq4tYF8xX0Y0mK9P2qQ3w=
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  metrics:
+    enable:
+      process: false
+      system: false
+  endpoint:
+    metrics:
+      enabled: false
 
 server:
   port: 8081

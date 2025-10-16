@@ -1,5 +1,7 @@
 package com.fiap.pj.core.pecainsumo.domain;
 
+import com.fiap.pj.core.pecainsumo.exception.PecaInsumoExceptions.PecasInsumoQuantidadeEstoqueInsuficienteException;
+import com.fiap.pj.core.pecainsumo.exception.PecaInsumoExceptions.PecasInsumoQuantidadeMenorIgualAZeroException;
 import com.fiap.pj.core.pecainsumo.util.factory.PecaInsumoTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -146,7 +148,7 @@ class PecaInsumoTest {
         void deveFalharAoAdicionarQuantidadeNegativa() {
             var pecaInsumo = PecaInsumoTestFactory.umPecaInsumo();
 
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(PecasInsumoQuantidadeMenorIgualAZeroException.class,
                     () -> pecaInsumo.adicionarEstoque(-1));
         }
 
@@ -154,7 +156,7 @@ class PecaInsumoTest {
         void deveFalharAoAdicionarQuantidadeZero() {
             var pecaInsumo = PecaInsumoTestFactory.umPecaInsumo();
 
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(PecasInsumoQuantidadeMenorIgualAZeroException.class,
                     () -> pecaInsumo.adicionarEstoque(0));
         }
 
@@ -162,7 +164,7 @@ class PecaInsumoTest {
         void deveFalharAoRemoverQuantidadeNegativa() {
             var pecaInsumo = PecaInsumoTestFactory.umPecaInsumo();
 
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(PecasInsumoQuantidadeMenorIgualAZeroException.class,
                     () -> pecaInsumo.removerEstoque(-1));
         }
 
@@ -170,7 +172,7 @@ class PecaInsumoTest {
         void deveFalharAoRemoverQuantidadeZero() {
             var pecaInsumo = PecaInsumoTestFactory.umPecaInsumo();
 
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(PecasInsumoQuantidadeMenorIgualAZeroException.class,
                     () -> pecaInsumo.removerEstoque(0));
         }
 
@@ -178,7 +180,7 @@ class PecaInsumoTest {
         void deveFalharAoRemoverQuantidadeMaiorQueEstoque() {
             var pecaInsumo = PecaInsumoTestFactory.umPecaInsumo();
 
-            assertThrows(IllegalArgumentException.class,
+            assertThrows(PecasInsumoQuantidadeEstoqueInsuficienteException.class,
                     () -> pecaInsumo.removerEstoque(QUANTIDADE_ESTOQUE + 1));
         }
     }

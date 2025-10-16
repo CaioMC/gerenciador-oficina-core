@@ -1,7 +1,10 @@
 package com.fiap.pj.core.ordemservico.app;
 
 
-import com.fiap.pj.core.ordemservico.adapter.out.db.OrdemServicoRepositoryJpa;
+import com.fiap.pj.core.cliente.app.gateways.ClienteGateway;
+import com.fiap.pj.core.cliente.util.factory.ClienteTestFactory;
+import com.fiap.pj.core.email.app.usecase.EnviarEmailUseCase;
+import com.fiap.pj.core.ordemservico.app.gateways.OrdemServicoGateway;
 import com.fiap.pj.core.ordemservico.domain.OrdemServico;
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoStatusInvalidoAguardandoRetiradaException;
@@ -16,10 +19,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.CRIADA;
 import static com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus.FINALIZADA;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,21 +37,30 @@ class MoverAguardandoRetiradaServiceTest {
     ArgumentCaptor<OrdemServico> ordemServicoArgumentCaptor;
 
     @Mock
-    private OrdemServicoRepositoryJpa ordemServicoRepositoryJpa;
+    private OrdemServicoGateway ordemServicoGateway;
+
+    @Mock
+    private ClienteGateway clienteGateway;
+
+    @Mock
+    private EnviarEmailUseCase enviarEmailUseCase;
 
     @InjectMocks
-    private MoverAguardandoRetiradaService moverAguardandoRetiradaService;
+    private MoverAguardandoRetiradaUseCaseImpl moverAguardandoRetiradaUseCaseImpl;
 
     @Test
     void deveAlteraStatusOsAguardandoRetirada() {
         TestSecurityConfig.setAuthentication();
+
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(FINALIZADA);
+        var cliente = ClienteTestFactory.umCliente();
 
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
+        when(clienteGateway.buscarPorId(any(UUID.class))).thenReturn(Optional.of(cliente));
 
-        moverAguardandoRetiradaService.handle(ordemServico.getId());
+        moverAguardandoRetiradaUseCaseImpl.handle(ordemServico.getId());
 
-        verify(ordemServicoRepositoryJpa).save(ordemServicoArgumentCaptor.capture());
+        verify(ordemServicoGateway).salvar(ordemServicoArgumentCaptor.capture());
         OrdemServico ordemServicoAlterada = ordemServicoArgumentCaptor.getValue();
 
         Assertions.assertNotNull(ordemServico);
@@ -55,9 +71,9 @@ class MoverAguardandoRetiradaServiceTest {
     @Test
     void deveRetornarOrdemServicoStatusInvalidoAguardandoRetiradaException() {
         var ordemServico = OrdemServicoTestFactory.umaOrdemServico(CRIADA);
-        when(ordemServicoRepositoryJpa.findByIdOrThrowNotFound(ordemServico.getId())).thenReturn(ordemServico);
+        when(ordemServicoGateway.buscarPorId(ordemServico.getId())).thenReturn(Optional.of(ordemServico));
 
-        var thrown = catchThrowable(() -> moverAguardandoRetiradaService.handle(ordemServico.getId()));
+        var thrown = catchThrowable(() -> moverAguardandoRetiradaUseCaseImpl.handle(ordemServico.getId()));
         assertThat(thrown).isInstanceOf(OrdemServicoStatusInvalidoAguardandoRetiradaException.class);
     }
 

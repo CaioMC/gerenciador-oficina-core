@@ -1,22 +1,37 @@
 version: '3.8'
 
 services:
+
   postgres:
     image: postgres:latest
     container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: gerenciador-oficina
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: oficina@123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  gerenciador-oficina-core:
+    image: gerenciador-oficina-core:latest
+    container_name: gerenciador-oficina-core
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
 
 volumes:
   postgresql:

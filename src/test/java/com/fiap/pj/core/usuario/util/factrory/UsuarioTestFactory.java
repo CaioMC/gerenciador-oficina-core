@@ -1,11 +1,12 @@
 package com.fiap.pj.core.usuario.util.factrory;
 
 
+import com.fiap.pj.core.usuario.app.usecase.command.AlterarUsuarioCommand;
+import com.fiap.pj.core.usuario.app.usecase.command.CriarUsuarioCommand;
+import com.fiap.pj.core.usuario.app.usecase.command.LoginUsuarioCommand;
 import com.fiap.pj.core.usuario.domain.Usuario;
 import com.fiap.pj.core.usuario.domain.enums.Perfil;
-import com.fiap.pj.core.usuario.usecase.command.AlterarUsuarioCommand;
-import com.fiap.pj.core.usuario.usecase.command.CriarUsuarioCommand;
-import com.fiap.pj.core.usuario.usecase.command.LoginUsuarioCommand;
+import com.fiap.pj.infra.usuario.persistence.UsuarioEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -32,12 +33,16 @@ public class UsuarioTestFactory {
         return usuario;
     }
 
+    public static UsuarioEntity umUsuarioEntity() {
+        return new UsuarioEntity(ID, NAME, LAST_NAME, E_MAIL, PASSWORD, true, Set.of(USER_ROLE));
+    }
+
     public static CriarUsuarioCommand umCriarUsuarioCommand() {
         return new CriarUsuarioCommand(NAME, LAST_NAME, E_MAIL, PASSWORD, true, Set.of(USER_ROLE));
     }
 
     public static AlterarUsuarioCommand UmAlterarUsuarioCommand(UUID id) {
-        return new AlterarUsuarioCommand(id, ALTER_NAME, ALTER_LAST_NAME, ALTER_E_MAIL, ALTER_PASSWORD, true, Set.of(ALTER_USER_ROLE));
+        return new AlterarUsuarioCommand(id, ALTER_NAME, ALTER_LAST_NAME, ALTER_PASSWORD, true, Set.of(ALTER_USER_ROLE));
     }
 
     public static LoginUsuarioCommand umLoginUsuarioCommand() {

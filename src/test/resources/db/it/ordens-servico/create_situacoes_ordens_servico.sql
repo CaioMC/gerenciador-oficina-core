@@ -24,29 +24,29 @@ VALUES('01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '113e83b4-02e3-4059-8498-f4beafbb
 
 INSERT INTO "_IT".situacoes_ordens_servico
 (id, status, ordem_servico_id, data_criacao, usuario_id)
-VALUES('765d2248-48bd-47da-8fc8-abd3867acae8','CRIADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-08 13:06:50.000 -0300', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
+VALUES('765d2248-48bd-47da-8fc8-abd3867acae8','CRIADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-08T12:06:50-03:00', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
 
 INSERT INTO "_IT".situacoes_ordens_servico
 (id, status, ordem_servico_id, data_criacao, usuario_id)
-VALUES('df483ff4-9527-42aa-98c0-0b68ba777962','EM_DIAGNOSTICO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-09 10:06:50.000 -0300', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
+VALUES('df483ff4-9527-42aa-98c0-0b68ba777962','EM_DIAGNOSTICO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-09T10:06:50-03:00', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
 
 INSERT INTO "_IT".situacoes_ordens_servico
 (id, status, ordem_servico_id, data_criacao, usuario_id)
-VALUES('8c666774-41f3-4eff-a9d8-70cc32dbc6d2','AGUARDANDO_APROVACAO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-10 10:06:50.000 -0300', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
+VALUES('8c666774-41f3-4eff-a9d8-70cc32dbc6d2','AGUARDANDO_APROVACAO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-10T10:06:50-03:00', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
 
 INSERT INTO "_IT".situacoes_ordens_servico
 (id, status, ordem_servico_id, data_criacao, usuario_id)
-VALUES('bd41fb0f-0776-4252-b4c4-3b934179ac27','EM_EXECUCAO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-11 10:06:50.000 -0300', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
+VALUES('bd41fb0f-0776-4252-b4c4-3b934179ac27','EM_EXECUCAO', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-11T10:06:50-03:00', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
 
  INSERT INTO "_IT".situacoes_ordens_servico
  (id, status, ordem_servico_id, data_criacao, usuario_id)
- VALUES('99a42b05-f88b-40b4-be95-88494e661fc3','FINALIZADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-12 10:06:50.000 -0300', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
+ VALUES('99a42b05-f88b-40b4-be95-88494e661fc3','FINALIZADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-12T10:06:50-03:00', 'ace50297-1785-4a7d-ae6d-8ec2dc450af6');
 
  INSERT INTO "_IT".situacoes_ordens_servico
  (id, status, ordem_servico_id, data_criacao, usuario_id)
- VALUES('a5eeb67b-4e9c-4c31-bfab-e1abc3f54e94','AGUARDANDO_RETIRADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-12 12:06:50.000 -0300', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
+ VALUES('a5eeb67b-4e9c-4c31-bfab-e1abc3f54e94','AGUARDANDO_RETIRADA', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-12T12:06:50-03:00', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
 
  INSERT INTO "_IT".situacoes_ordens_servico
  (id, status, ordem_servico_id, data_criacao, usuario_id)
- VALUES('ddcffd69-cf96-4260-a56f-573cba69899c','ENTREGUE', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-13 10:06:50.000 -0300', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
+ VALUES('ddcffd69-cf96-4260-a56f-573cba69899c','ENTREGUE', '01bd50f7-2c6d-45f5-bee2-cea5b7e0be9a', '2025-08-13T10:06:50-03:00', '37255ba6-ca9b-4024-af66-d2135eb7ffca');
 

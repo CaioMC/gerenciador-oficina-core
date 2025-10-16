@@ -1,7 +1,7 @@
 package com.fiap.pj.core.servico.domain;
 
 
-import com.fiap.pj.infra.jpa.BaseCrudRepository;
+import com.fiap.pj.infra.sk.jpa.BaseCrudRepository;
 
 import java.util.UUID;
 

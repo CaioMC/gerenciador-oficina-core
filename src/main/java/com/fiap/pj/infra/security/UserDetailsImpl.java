@@ -1,6 +1,6 @@
 package com.fiap.pj.infra.security;
 
-import com.fiap.pj.core.usuario.domain.Usuario;
+import com.fiap.pj.infra.usuario.persistence.UsuarioEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private transient Usuario usuario;
+    private transient UsuarioEntity usuario;
     private List<SimpleGrantedAuthority> authorities;
 
     @Override
